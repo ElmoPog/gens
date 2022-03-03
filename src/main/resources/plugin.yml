@@ -1,0 +1,6 @@
+name: Gens
+version: '${project.version}'
+main: me.elmopog.gens.Gens
+api-version: 1.17
+authors: [ ElmoPog ]
+description: An experimental gens plugin
