@@ -8,6 +8,7 @@ import me.elmopog.gens.utils.prefix;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -67,7 +68,12 @@ public class BlockPlace implements Listener {
 
         //Checks if player has enough gen slots
 
-        if()
+        if(genUtils.getGenSlots(p) == genUtils.getMaxSlots(p)){
+            prefix.sendPrefix(p);
+            format.format(p, "&cError: Max gens placed! " + genUtils.getFormattedSlots(p));
+            e.setCancelled(true);
+            return;
+        }
 
         data.get().options().copyDefaults(true);
         //Gen data
@@ -75,8 +81,13 @@ public class BlockPlace implements Listener {
         data.get().set(locationText + ".item", item.name());
         data.get().set(locationText + ".owner", e.getPlayer().getUniqueId());
         //Player data
-        data.get().set(p.getUniqueId(), );
+        genUtils.addGenSlots(p, 1);
+        data.get().set(p.getUniqueId() + ".gensPlaced", locationText);
         //
+        p.sendTitle(ChatColor.translateAlternateColorCodes('&', "&aPlaced generator"), genUtils.getFormattedSlots(p), 1, 20, 1);
+
         data.save();
+
+        p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1, 20);
     }
 }

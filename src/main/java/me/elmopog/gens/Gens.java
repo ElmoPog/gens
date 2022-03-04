@@ -5,9 +5,13 @@ import me.elmopog.gens.listeners.BlockBreak;
 import me.elmopog.gens.listeners.BlockPlace;
 import me.elmopog.gens.listeners.JoinListener;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*TODO
+    - Complete generate method in genUtils
+    - ln 85 BlockPlace
+    - ln 38 BlockBreak
     - Add config.yml to easily add/remove/change generators
     - Make gens do something when placed
     - * MORE COMING *
@@ -15,8 +19,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Gens extends JavaPlugin {
 
+    public static Plugin plugin;
+
     @Override
     public void onEnable() {
+
+        plugin = this;
+
         //Registers listeners
         Bukkit.getServer().getPluginManager().registerEvents(new BlockPlace(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new BlockBreak(), this);
@@ -36,5 +45,9 @@ public final class Gens extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static Plugin getPlugin(){
+        return plugin;
     }
 }

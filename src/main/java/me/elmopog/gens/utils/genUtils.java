@@ -1,10 +1,7 @@
 package me.elmopog.gens.utils;
 
 import me.elmopog.gens.data;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import sun.jvm.hotspot.opto.Block;
 
@@ -102,7 +99,44 @@ public class genUtils {
     //Add to gen slots of player
     public static void addGenSlots(Player player, int amount){
         data.get().options().copyDefaults(true);
-        data.get().set(UUID + ".gensPlaced", newValue);
+        data.get().set(player.getUniqueId() + ".gensPlaced", getGenSlots(player) + amount);
         data.save();
+    }
+    public static void addGenSlots(UUID uuid, int amount){
+        data.get().options().copyDefaults(true);
+        data.get().set(uuid + ".gensPlaced", getGenSlots(uuid) + amount);
+        data.save();
+    }
+
+    //Remove gen slots from players
+    public static void removeGenSlots(Player player, int amount){
+        data.get().options().copyDefaults(true);
+        data.get().set(player.getUniqueId() + ".gensPlaced", getGenSlots(player) - amount);
+        data.save();
+    }
+    public static void removeGenSlots(UUID uuid, int amount){
+        data.get().options().copyDefaults(true);
+        data.get().set(uuid + ".gensPlaced", getGenSlots(uuid) - amount);
+        data.save();
+    }
+
+    //Get max gen slots of players
+    public static int getMaxSlots(Player player){
+        data.get().options().copyDefaults(true);
+        return data.get().getInt(player.getUniqueId() + ".gensMax");
+    }
+
+    //Get nice format of genslots
+    public static String getFormattedSlots(Player player){
+        int slots = getGenSlots(player);
+        int max = getMaxSlots(player);
+        return ChatColor.translateAlternateColorCodes('&', "&8(&b" + slots + "&7/&3" + max + "&8)");
+    }
+
+    //Generate items
+    public static void generate(Player player){
+        for(String key : data.get().getConfigurationSection(player.getUniqueId().toString()).getKeys(false)){
+            System.out.println(data.get().getString(player.getUniqueId() + ".gensPlaced" + key));
+        }
     }
 }
