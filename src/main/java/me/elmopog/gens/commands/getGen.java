@@ -42,6 +42,8 @@ public class getGen implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+
+        //Checks if player is sender/exists to avoid NPE's
         Player p = null;
         if(sender instanceof Player){
             p = (Player) sender;
@@ -49,17 +51,23 @@ public class getGen implements TabExecutor {
         if(p == null){
             return true;
         }
+
+        //Checks if minimum amount of arguments are provided
         if(args.length < 2){
-            p.sendMessage("e");
             sendUsage((Player) sender);
             return true;
         }
-        int amount = 1;
+
+        //Checks if arguments are more than needed
         if(args.length > 3){
             sendUsage(p);
             return true;
         }
-        //Checks if arg-3 (amount) is a number
+
+        //Sets defaulting value for amount
+        int amount = 1;
+
+        //Checks if arg-3 (amount) is a number && sets amount to the amount defined by the player
         if(args.length == 3){
             if(StringUtils.isNumeric(args[2])){
                 amount = Integer.parseInt(args[2]);
@@ -90,6 +98,7 @@ public class getGen implements TabExecutor {
         prefix.sendPrefix(p);
         format.format(p, "&aSuccessfully gave &f" + player.getName() + " &aa &3" + type + " &fgenerator!");
 
+        //Makes the gen given look noice
         ItemStack gen = new ItemStack(getGenMap().get(type));
         ItemMeta meta = gen.getItemMeta();
         meta.setDisplayName(ChatColor.RED + StringUtils.capitalize(type) + ChatColor.WHITE + " generator");
@@ -99,12 +108,12 @@ public class getGen implements TabExecutor {
         player.getInventory().addItem(gen);
         return true;
     }
-
     private static void sendUsage(Player p){
         prefix.sendPrefix(p);
         format.format(p ,"&cUsage: &f/givegen &b<player> <type> &3(amount)");
     }
 
+    //AUTOCOMPLETE FOR GENS GIVE COMMAND
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> list = new ArrayList<>();
@@ -113,6 +122,7 @@ public class getGen implements TabExecutor {
                 list.add(loop.getName());
             }
         }else if(args.length == 2){
+            //Adds <type> to the autocomplete list
             List<String> newList = Stream.concat(list.stream(), getGensList().stream())
                     .collect(Collectors.toList());
             newList.add("<type>");
