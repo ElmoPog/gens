@@ -2,6 +2,7 @@ package me.elmopog.gens.commands;
 
 import me.elmopog.gens.utils.center;
 import me.elmopog.gens.utils.format;
+import me.elmopog.gens.utils.genUtils;
 import me.elmopog.gens.utils.prefix;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -21,25 +22,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class getGen implements TabExecutor {
-    //The list with names for all generators
-    private static final List<String> gensList = new ArrayList<>(Arrays.asList("elmo", "joe"));
-
-    //Hashmap with all gens and their blocks
-    private static final Map<String, Material> genMap = new HashMap<String, Material>(){{
-        put("joe", Material.MELON);
-        put("elmo", Material.REDSTONE_BLOCK);
-    }};
-
-    //Getter for list with generators
-    public static List<String> getGensList(){
-        return gensList;
-    }
-
-    //Getter for map with generators
-    public static Map<String, Material> getGenMap(){
-        return genMap;
-    }
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
@@ -76,11 +58,8 @@ public class getGen implements TabExecutor {
                 p.sendMessage(ChatColor.RED + "Error: " + ChatColor.WHITE + args[2] + ChatColor.RED + " is not a number!");
             }
         }
-        //Sets some variables for ease of args use
+
         Player player = Bukkit.getPlayer(args[0]);
-        String type = args[1].toLowerCase();
-        String[] itemAsList = StringUtils.capitalize(getGenMap().get(type).toString().toLowerCase()).split("_");
-        String item = itemAsList[0];
 
         //Checks if player exists
         if(player == null){
@@ -90,20 +69,27 @@ public class getGen implements TabExecutor {
         }
 
         //Checks if arg-2 is a valid type
-        if(!getGensList().contains(args[1].toLowerCase())){
+        if(!genUtils.getGensList().contains(args[1].toLowerCase())){
             prefix.sendPrefix(p);
             p.sendMessage(ChatColor.RED + "Error: " + ChatColor.WHITE + args[1] + ChatColor.RED + " is not a valid gen!");
             return true;
         }
+
+        //Sets some variables for ease of args use
+        String type = args[1].toLowerCase();
+        String item = StringUtils.capitalize(genUtils.getGenItemMap().get(type).toString().toLowerCase().replace("_", " "));
+
+        //
         prefix.sendPrefix(p);
         format.format(p, "&aSuccessfully gave &f" + player.getName() + " &aa &3" + type + " &fgenerator!");
 
         //Makes the gen given look noice
-        ItemStack gen = new ItemStack(getGenMap().get(type));
+        ItemStack gen = new ItemStack(genUtils.getGenMap().get(type));
         ItemMeta meta = gen.getItemMeta();
-        meta.setDisplayName(ChatColor.RED + StringUtils.capitalize(type) + ChatColor.WHITE + " generator");
-        meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Type: " + ChatColor.RED + StringUtils.capitalize(type),
-                ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Generates: " + ChatColor.RED + item)));
+        meta.setDisplayName(ChatColor.LIGHT_PURPLE + StringUtils.capitalize(type) + ChatColor.WHITE + " generator");
+        meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Type: " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(type),
+                ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Generates: " + ChatColor.LIGHT_PURPLE + item)));
+        meta.removeItemFlags();
         gen.setItemMeta(meta);
         player.getInventory().addItem(gen);
         return true;
@@ -123,7 +109,7 @@ public class getGen implements TabExecutor {
             }
         }else if(args.length == 2){
             //Adds <type> to the autocomplete list
-            List<String> newList = Stream.concat(list.stream(), getGensList().stream())
+            List<String> newList = Stream.concat(list.stream(), genUtils.getGensList().stream())
                     .collect(Collectors.toList());
             newList.add("<type>");
             return newList;
