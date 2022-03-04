@@ -18,12 +18,15 @@ public class BlockPlace implements Listener {
         Block block = e.getBlockPlaced();
         ItemStack hand = p.getInventory().getItemInMainHand();
 
+        //Makes lore into one string separated by spaces
         StringJoiner sbl = new StringJoiner(" ");
         if(hand.lore() != null && (!(hand.lore().size()==0))){
             for(String line : hand.getItemMeta().getLore()){
                 sbl.add(line);
             }
         }
+
+        //Checks if the lore is empty, if so it'll put "null" instead of ""
         String lore = (!(sbl.toString().equals(""))) ? sbl.toString() : "null";
         p.sendMessage("hand: " + hand.getType() + ", block: " + block.getType() + ", lore: \"" + lore + "\"");
     }
