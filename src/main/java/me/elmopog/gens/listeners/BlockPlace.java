@@ -56,7 +56,7 @@ public class BlockPlace implements Listener {
         //Sets some variables for ease of use
         String type = ChatColor.stripColor(splitlore[2]);
         Material item = genUtils.getGenItemMap().get(type.toLowerCase());
-        String locationText = genUtils.locationToText(e.getBlockPlaced().getX(), e.getBlockPlaced().getY(), e.getBlockPlaced().getZ(), e.getBlockPlaced().getWorld().getName());
+        String locationText = genUtils.locationToText(e.getBlockPlaced().getLocation());
 
         //Checks if block at location is somehow already a gen
         if(genUtils.isGen(locationText)){
@@ -79,10 +79,10 @@ public class BlockPlace implements Listener {
         //Gen data
         data.get().set(locationText + ".type", type);
         data.get().set(locationText + ".item", item.name());
-        data.get().set(locationText + ".owner", e.getPlayer().getUniqueId());
+        data.get().set(locationText + ".owner", e.getPlayer().getUniqueId().toString());
         //Player data
         genUtils.addGenSlots(p, 1);
-        data.get().set(p.getUniqueId() + ".gensPlaced", locationText);
+        data.get().set(p.getUniqueId().toString() + ".gens." + locationText, type);
         //
         p.sendTitle(ChatColor.translateAlternateColorCodes('&', "&aPlaced generator"), genUtils.getFormattedSlots(p), 1, 20, 1);
 

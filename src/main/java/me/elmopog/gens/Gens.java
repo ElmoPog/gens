@@ -1,9 +1,11 @@
 package me.elmopog.gens;
 
 import me.elmopog.gens.commands.getGen;
+import me.elmopog.gens.commands.reloadConfig;
 import me.elmopog.gens.listeners.BlockBreak;
 import me.elmopog.gens.listeners.BlockPlace;
 import me.elmopog.gens.listeners.JoinListener;
+import me.elmopog.gens.utils.genUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +28,13 @@ public final class Gens extends JavaPlugin {
 
         plugin = this;
 
+        //Config init
+        getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+
+        genUtils.setAll();
+        //
+
         //Registers listeners
         Bukkit.getServer().getPluginManager().registerEvents(new BlockPlace(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new BlockBreak(), this);
@@ -34,6 +43,7 @@ public final class Gens extends JavaPlugin {
 
         //Registers commands
         getCommand("givegen").setExecutor(new getGen());
+        getCommand("reloadconfig").setExecutor(new reloadConfig());
         //
 
         //Registers config

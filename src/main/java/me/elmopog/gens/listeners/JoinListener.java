@@ -2,6 +2,7 @@ package me.elmopog.gens.listeners;
 
 import me.elmopog.gens.Gens;
 import me.elmopog.gens.data;
+import me.elmopog.gens.utils.genUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,12 +18,13 @@ public class JoinListener implements Listener {
         if(data.get().get(e.getPlayer().getUniqueId() + ".gensPlaced") == null){
             data.get().set(e.getPlayer().getUniqueId() + ".gensPlaced", 0);
             data.get().set(e.getPlayer().getUniqueId() + ".gensMax", 5);
+            data.get().set(e.getPlayer().getUniqueId() + ".gens", null);
             data.save();
         }
 
         Bukkit.getServer().getScheduler().runTaskTimer(Gens.getPlugin(), new Runnable(){
             @Override public void run() {
-
+                genUtils.generate(e.getPlayer());
             }
         }, 0, 200);
     }

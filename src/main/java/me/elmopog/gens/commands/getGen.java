@@ -69,29 +69,21 @@ public class getGen implements TabExecutor {
         }
 
         //Checks if arg-2 is a valid type
-        if(!genUtils.getGensList().contains(args[1].toLowerCase())){
+        if(!genUtils.getGensList().contains(args[1])){
             prefix.sendPrefix(p);
             p.sendMessage(ChatColor.RED + "Error: " + ChatColor.WHITE + args[1] + ChatColor.RED + " is not a valid gen!");
             return true;
         }
 
         //Sets some variables for ease of args use
-        String type = args[1].toLowerCase();
-        String item = StringUtils.capitalize(genUtils.getGenItemMap().get(type).toString().toLowerCase().replace("_", " "));
+        String type = args[1];
 
         //
         prefix.sendPrefix(p);
         format.format(p, "&aSuccessfully gave &f" + player.getName() + " &aa &3" + type + " &fgenerator!");
 
-        //Makes the gen given look noice
-        ItemStack gen = new ItemStack(genUtils.getGenMap().get(type));
-        ItemMeta meta = gen.getItemMeta();
-        meta.setDisplayName(ChatColor.LIGHT_PURPLE + StringUtils.capitalize(type) + ChatColor.WHITE + " generator");
-        meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Type: " + ChatColor.LIGHT_PURPLE + StringUtils.capitalize(type),
-                ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Generates: " + ChatColor.LIGHT_PURPLE + item)));
-        meta.removeItemFlags();
-        gen.setItemMeta(meta);
-        player.getInventory().addItem(gen);
+        genUtils.giveGen(p, type);
+
         return true;
     }
     private static void sendUsage(Player p){

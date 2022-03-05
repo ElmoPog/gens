@@ -7,3 +7,5 @@ description: An experimental gens plugin
 commands:
   givegen:
     description: Command to get a gen
+  reloadconfig:
+    description: Command to reload the config.yml

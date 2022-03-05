@@ -1,0 +1,13 @@
+#How the config should be
+#gens:
+  #name of generator here:
+    #block: "minecraft block here, has to be in minecraft format (yellow_wool, redstone_lamp etc)" MUST BE A PLACEABLE BLOCK
+    #generates: "minecraft item here, has to be in the minecraft format (yellow_dye, redstone etc)" This is what item the generator will generate
+    #itemName: "name" This is the name of the item that will be dropped
+
+#Example generator
+gens:
+  example:
+    block: "obsidian"
+    generates: "flint"
+    itemName: "&5Obsidian &8Powder"
