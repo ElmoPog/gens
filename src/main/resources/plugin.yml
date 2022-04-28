@@ -6,6 +6,11 @@ authors: [ ElmoPog ]
 description: An experimental gens plugin
 commands:
   givegen:
+    permission: gens.givegen
     description: Command to get a gen
   reloadconfig:
+    permission: op
     description: Command to reload the config.yml
+  genslots:
+    permission: gens.genslots
+    description: Command to modify gen slots

@@ -1,5 +1,6 @@
 package me.elmopog.gens;
 
+import me.elmopog.gens.commands.genSlots;
 import me.elmopog.gens.commands.getGen;
 import me.elmopog.gens.commands.reloadConfig;
 import me.elmopog.gens.listeners.BlockBreak;
@@ -42,6 +43,7 @@ public final class Gens extends JavaPlugin {
         //
 
         //Registers commands
+        getCommand("genslots").setExecutor(new genSlots());
         getCommand("givegen").setExecutor(new getGen());
         getCommand("reloadconfig").setExecutor(new reloadConfig());
         //

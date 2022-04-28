@@ -157,6 +157,8 @@ public class genUtils {
         data.get().options().copyDefaults(true);
         return (int) data.get().get(player.getUniqueId().toString() + ".gensPlaced");
     }
+
+
     //Get gen slots of player uuid overload
     public static int getGenSlots(UUID UUID){
         data.get().options().copyDefaults(true);
@@ -169,6 +171,13 @@ public class genUtils {
         data.get().set(player.getUniqueId().toString() + ".gensPlaced", newValue);
         data.save();
     }
+
+    public static void setSlots(Player player, int newValue){
+        data.get().options().copyDefaults(true);
+        data.get().set(player.getUniqueId().toString() + ".gensMax", newValue);
+        data.save();
+    }
+
     public static void setGenSlots(UUID UUID, int newValue){
         data.get().options().copyDefaults(true);
         data.get().set(UUID + ".gensPlaced", newValue);
@@ -181,6 +190,13 @@ public class genUtils {
         data.get().set(player.getUniqueId().toString() + ".gensPlaced", getGenSlots(player) + amount);
         data.save();
     }
+
+    public static void addSlots(Player player, int amount){
+        data.get().options().copyDefaults(true);
+        data.get().set(player.getUniqueId().toString() + ".gensMax", getMaxSlots(player) + amount);
+        data.save();
+    }
+
     public static void addGenSlots(UUID uuid, int amount){
         data.get().options().copyDefaults(true);
         data.get().set(uuid + ".gensPlaced", getGenSlots(uuid) + amount);
@@ -191,6 +207,11 @@ public class genUtils {
     public static void removeGenSlots(Player player, int amount){
         data.get().options().copyDefaults(true);
         data.get().set(player.getUniqueId().toString() + ".gensPlaced", getGenSlots(player) - amount);
+        data.save();
+    }
+    public static void removeSlots(Player player, int amount){
+        data.get().options().copyDefaults(true);
+        data.get().set(player.getUniqueId().toString() + ".gensMax", getMaxSlots(player) - amount);
         data.save();
     }
     public static void removeGenSlots(UUID uuid, int amount){

@@ -18,7 +18,7 @@ public class JoinListener implements Listener {
         if(data.get().get(e.getPlayer().getUniqueId() + ".gensPlaced") == null){
             data.get().set(e.getPlayer().getUniqueId() + ".gensPlaced", 0);
             data.get().set(e.getPlayer().getUniqueId() + ".gensMax", 5);
-            data.get().set(e.getPlayer().getUniqueId() + ".gens", null);
+            data.get().set(e.getPlayer().getUniqueId() + ".gens.temp", null);
             data.save();
         }
 
