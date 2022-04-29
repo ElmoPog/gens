@@ -29,6 +29,7 @@ public class BlockPlace implements Listener {
         Block block = e.getBlockPlaced();
         ItemStack hand = p.getInventory().getItemInMainHand();
 
+
         //Makes lore into one string separated by spaces
         StringJoiner sbl = new StringJoiner(" ");
         if(hand.lore() != null && (!(hand.lore().size()==0))){
@@ -53,11 +54,11 @@ public class BlockPlace implements Listener {
             return;
         }
 
+
         //Sets some variables for ease of use
         String type = ChatColor.stripColor(splitlore[2]);
         Material item = genUtils.getGenItemMap().get(type.toLowerCase());
         String locationText = genUtils.locationToText(e.getBlockPlaced().getLocation());
-
         //Checks if block at location is somehow already a gen
         if(genUtils.isGen(locationText)){
             e.setCancelled(true);
@@ -85,7 +86,6 @@ public class BlockPlace implements Listener {
         data.get().set(p.getUniqueId().toString() + ".gens." + locationText, type);
         //
         p.sendTitle(ChatColor.translateAlternateColorCodes('&', "&aPlaced generator"), genUtils.getFormattedSlots(p), 1, 20, 1);
-
         data.save();
 
         p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1, 20);

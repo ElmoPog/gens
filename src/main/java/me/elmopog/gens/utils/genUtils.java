@@ -241,9 +241,13 @@ public class genUtils {
 
         ItemStack gen = new ItemStack(genUtils.getGenMap().get(type));
         ItemMeta meta = gen.getItemMeta();
+
+        String typeColor = Gens.getPlugin().getConfig().getString("gens." + type + ".typeColor").replace("&", "§");
+        String generateColor = Gens.getPlugin().getConfig().getString("gens." + type + ".generateColor").replace("&", "§");
+
         meta.setDisplayName(ChatColor.LIGHT_PURPLE + StringUtils.capitalize(type) + ChatColor.WHITE + " generator");
-        meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Type: " + ChatColor.LIGHT_PURPLE + type,
-                ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Generates: " + ChatColor.LIGHT_PURPLE + item)));
+        meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Type: " + typeColor + type,
+                ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Generates: " + generateColor + item)));
         meta.removeItemFlags();
         gen.setItemMeta(meta);
         player.getInventory().addItem(gen);
@@ -251,26 +255,30 @@ public class genUtils {
 
     //Generate items
     public static void generate(Player player){
-        for(String key : data.get().getConfigurationSection(player.getUniqueId().toString() + ".gens").getKeys(false)){
+        try{
+            for(String key : data.get().getConfigurationSection(player.getUniqueId().toString() + ".gens").getKeys(false)){
+                String type = data.get().getString(player.getUniqueId().toString() + ".gens." + key);
+                Material item1 = genUtils.getGenItemMap().get(type);
+                System.out.println(item1);
+                Location loc = genUtils.textToLocation(key);
 
-            String type = data.get().getString(player.getUniqueId().toString() + ".gens." + key);
-            Material item1 = genUtils.getGenItemMap().get(type);
-            Location loc = genUtils.textToLocation(key);
+                World world = loc.getWorld();
+                loc.setY(loc.getY() + 1.0);
+                loc.add(0.5D, 0D, 0.5D);
 
-            World world = loc.getWorld();
-            loc.setY(loc.getY() + 1.0);
-            loc.add(0.5D, 0D, 0.5D);
+                ItemStack itemStack = new ItemStack(item1);
+                ItemMeta meta = itemStack.getItemMeta();
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getItemNameMap().get(item1)));
+                itemStack.setItemMeta(meta);
 
-            ItemStack itemStack = new ItemStack(item1);
-            ItemMeta meta = itemStack.getItemMeta();
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getItemNameMap().get(item1)));
-            itemStack.setItemMeta(meta);
+                Item item = world.dropItem(loc, itemStack);
 
-            Item item = world.dropItem(loc, itemStack);
+                item.setVelocity(new Vector(0, 0, 0));
 
-            item.setVelocity(new Vector(0, 0, 0));
-
-            item.teleport(loc);
+                item.teleport(loc);
+            }
+        } catch(NullPointerException e){
+            //Do nothing
         }
     }
 }

@@ -11,3 +11,5 @@ gens:
     block: "obsidian"
     generates: "flint"
     itemName: "&5Obsidian &8Powder"
+    typeColor: "&5"
+    generateColor: "&8"

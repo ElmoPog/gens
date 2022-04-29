@@ -12,20 +12,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.UUID;
 
 public class BlockBreak implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent e){
+    public void onBlockBreak(PlayerInteractEvent e){
+
+        if(!e.getAction().equals(Action.LEFT_CLICK_BLOCK)){
+            return;
+        }
+        if(genUtils.isGen(genUtils.locationToText(e.getClickedBlock().getLocation()))){
+            e.setCancelled(true);
+        }
+
 
         Player p = e.getPlayer();
 
-        String loc = genUtils.locationToText(e.getBlock().getLocation());
-        if(!genUtils.isGen(loc)){
-            return;
-        }
+        String loc = genUtils.locationToText(e.getClickedBlock().getLocation());
 
         Player owner = Bukkit.getPlayer(UUID.fromString(data.get().getString(loc + ".owner")));
         if(owner != e.getPlayer()){
@@ -58,7 +65,7 @@ public class BlockBreak implements Listener {
 
         e.setCancelled(true);
 
-        e.getBlock().setType(Material.AIR);
+        e.getClickedBlock().setType(Material.AIR);
 
     }
 }
