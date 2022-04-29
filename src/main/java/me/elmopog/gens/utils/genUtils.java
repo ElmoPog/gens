@@ -243,11 +243,23 @@ public class genUtils {
         ItemMeta meta = gen.getItemMeta();
 
         String typeColor = Gens.getPlugin().getConfig().getString("gens." + type + ".typeColor").replace("&", "§");
-        String generateColor = Gens.getPlugin().getConfig().getString("gens." + type + ".generateColor").replace("&", "§");
+        String generateColor = Gens.getPlugin().getConfig().getString("gens." + type + ".generateColor").replace("&", "§").split(" ")[0];
+        String generateColor2 = "";
+
+        String itemSplit = item.split(" ")[0];
+        String itemSplit2 = "";
+
+        if(Gens.getPlugin().getConfig().getString("gens." + type + ".generateColor").split(" ").length > 1){
+            generateColor2 = Gens.getPlugin().getConfig().getString("gens." + type + ".generateColor").split(" ")[1].replace("&", "§");
+        }
+        if(item.split(" ").length > 1){
+            itemSplit2 = item.split(" ")[1];
+        }
+
 
         meta.setDisplayName(ChatColor.LIGHT_PURPLE + StringUtils.capitalize(type) + ChatColor.WHITE + " generator");
         meta.setLore(new ArrayList<>(Arrays.asList(ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Type: " + typeColor + type,
-                ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Generates: " + generateColor + item)));
+                ChatColor.WHITE + "-" + ChatColor.DARK_AQUA + " Generates: " + generateColor + itemSplit + " " + generateColor2 + itemSplit2)));
         meta.removeItemFlags();
         gen.setItemMeta(meta);
         player.getInventory().addItem(gen);

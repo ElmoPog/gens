@@ -4,6 +4,8 @@
     #block: "minecraft block here, has to be in minecraft format (yellow_wool, redstone_lamp etc)" MUST BE A PLACEABLE BLOCK
     #generates: "minecraft item here, has to be in the minecraft format (yellow_dye, redstone etc)" This is what item the generator will generate
     #itemName: "name" This is the name of the item that will be dropped
+    #typeColor: "&a" This is the color of the word behind "type:"
+    #generatesColor: "&a" This is the color of the word behind "generates:" (You can seperate by spaces if the there are two words you want to color
 
 #Example generator
 gens:
