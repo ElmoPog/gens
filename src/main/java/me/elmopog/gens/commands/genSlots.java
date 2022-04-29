@@ -57,7 +57,7 @@ public class genSlots implements TabExecutor {
             genUtils.addSlots(target, Integer.parseInt(args[2]));
         }
         if(args[1].equalsIgnoreCase("remove")) {
-            if(genUtils.getGenSlots(target) - Integer.parseInt(args[2]) < 0) {
+            if(genUtils.getMaxSlots(target) - Integer.parseInt(args[2]) < 0) {
                 if(sender instanceof Player) {
                     prefix.sendPrefix((Player) sender);
                 }
